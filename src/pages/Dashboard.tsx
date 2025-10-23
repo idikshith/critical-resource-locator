@@ -3,14 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Ambulance, Hospital, MapPin, Phone, LogOut } from "lucide-react";
+import { Ambulance, Hospital, MapPin, Users, LogOut, BookOpen } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
+import { EmergencyRequestModal } from "@/components/EmergencyRequestModal";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [emergencyModalOpen, setEmergencyModalOpen] = useState(false);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -40,10 +42,11 @@ const Dashboard = () => {
   };
 
   const handleEmergencyRequest = () => {
-    toast({
-      title: "Emergency Request",
-      description: "Ambulance allocation feature coming soon!",
-    });
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
+    setEmergencyModalOpen(true);
   };
 
   if (loading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -85,7 +88,7 @@ const Dashboard = () => {
 
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate("/medical-library")}>
             <div className="w-12 h-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
-              <MapPin className="w-6 h-6 text-accent" />
+              <BookOpen className="w-6 h-6 text-accent" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Medical Library</h3>
             <p className="text-muted-foreground">Access first-aid guides</p>
@@ -93,13 +96,29 @@ const Dashboard = () => {
 
           <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate("/community")}>
             <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-              <Phone className="w-6 h-6 text-primary" />
+              <Users className="w-6 h-6 text-primary" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Community</h3>
             <p className="text-muted-foreground">Connect with support network</p>
           </Card>
+
+          <Card className="p-6 hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate("/gps-monitoring")}>
+            <div className="w-12 h-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-4">
+              <MapPin className="w-6 h-6 text-secondary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">GPS Tracking</h3>
+            <p className="text-muted-foreground">Track ambulances in real-time</p>
+          </Card>
         </div>
       </div>
+
+      {user && (
+        <EmergencyRequestModal
+          open={emergencyModalOpen}
+          onOpenChange={setEmergencyModalOpen}
+          userId={user.id}
+        />
+      )}
     </div>
   );
 };

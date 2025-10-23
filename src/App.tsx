@@ -8,6 +8,8 @@ import GPSMonitoring from "./pages/GPSMonitoring";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
 import MedicalLibrary from "./pages/MedicalLibrary";
+import Hospitals from "./pages/Hospitals";
+import Community from "./pages/Community";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +25,8 @@ const App = () => (
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/medical-library" element={<MedicalLibrary />} />
+          <Route path="/hospitals" element={<Hospitals />} />
+          <Route path="/community" element={<Community />} />
           <Route path="/gps-monitoring" element={<GPSMonitoring />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
