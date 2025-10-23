@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import GPSMonitoring from "./pages/GPSMonitoring";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
+import MedicalLibrary from "./pages/MedicalLibrary";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/medical-library" element={<MedicalLibrary />} />
           <Route path="/gps-monitoring" element={<GPSMonitoring />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
